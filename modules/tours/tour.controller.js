@@ -16,7 +16,7 @@ export const createTour = async (req, res) => {
 // Get all tours
 export const getTours = async (req, res) => {
   try {
-    const tours = await Tour.find().populate("createdBy", "firstName lastName");
+    const tours = await Tour.find().populate("createdBy", "firstName lastName").populate("reviews.user","firstName lastName");
     res.status(200).json(tours);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });   
@@ -26,7 +26,7 @@ export const getTours = async (req, res) => {
 export const getTourById = async (req, res) => {
   try {
     const tourId = req.params.id;
-    const tour = await Tour.findById(tourId).populate("createdBy", "firstName lastName");
+    const tour = await Tour.findById(tourId).populate("createdBy", "firstName lastName").populate("reviews.user","firstName lastName");
     if (!tour) {
       return res.status(404).json({ message: "Tour not found" });
     }
@@ -73,3 +73,36 @@ export const deleteTour = async (req, res) => {
     res.status(500).json({ message: "Server Error", error });
   }
 };
+
+export const addReview = async (req, res) =>{
+  try{
+    const tourId = req.params.id;
+
+    const tour = await Tour.findById(tourId)
+    if(!tour){
+      res.status(404).json({ message: "Server Error", error });
+    }
+  
+    const {rating, comment, user} = req.body
+  
+    const existingReview = tour.reviews.find(
+      (rev) => rev.user.toString()=== user
+    );
+    if(existingReview){
+     return res.status(404).json({ message: "You have already revieved this tour" });
+  
+    }
+    const newReview = {user, rating, comment};
+    tour.reviews.push(newReview);
+  
+    const totalRating = tour.reviews.reduce((acc, rev) => acc + rev.rating, 0)
+    tour.avarageRating = totalRating / tour.reviews.length;
+    tour.save();
+    res.status(201).json({ message: "Tour deleted successfully" });
+
+  }catch(error){
+    res.status(500).json({ message: "Server Error", error });
+
+  }
+  
+}

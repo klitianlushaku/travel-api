@@ -1,4 +1,22 @@
-import mongoose from "mongoose"
+import mongoose, { Mongoose } from "mongoose"
+
+const reviewShcema = new mongoose.Schema({
+
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref:"User",
+        required: true,
+    },
+    comment:{
+        type: String,
+    },
+    rating:{
+        type: Number,
+        min: 1,
+        max: 5,
+        required: true,
+    },
+})
 
 const tourSchema = new mongoose.Schema(
     {
@@ -14,6 +32,7 @@ const tourSchema = new mongoose.Schema(
             ref:"user",
              required: true},
 
+             reviews: [reviewShcema],
 
 
 
