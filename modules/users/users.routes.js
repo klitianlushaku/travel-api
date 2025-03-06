@@ -10,4 +10,4 @@ router.put("/uptadeUser/:id", uptadeUser)
 router.delete("/deleteUser/:id", deleteUser)
 
 
-export default router
+export default router;
