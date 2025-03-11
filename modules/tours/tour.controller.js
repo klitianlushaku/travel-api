@@ -3,7 +3,14 @@ import Tour from "./tour.model.js";
 // Create a new tour
 export const createTour = async (req, res) => {
   try {
-    const { title, description, location, country, city, price, averageRating, image,createdBy } = req.body;
+    const { title, description, location, country, city, price, averageRating,createdBy } = req.body;
+    const image = req.file ? req.file.path : null;
+    // let image;    //e njejta if else
+    // if(req.file){
+    //   image = req.file.path;
+    // }else{
+    //   image = null
+    // }
     const tour = new Tour({ title, description, location, country, city, price, averageRating, image,createdBy });
     await tour.save();
     res.status(201).json({ message: "Tour created successfully", tour });
@@ -40,7 +47,7 @@ export const getTourById = async (req, res) => {
 export const updateTour = async (req, res) => {
   try {
     const tourId = req.params.id;
-    const { title, description, location, country, city, price, averageRating, image } = req.body;
+    const { title, description, location, country, city, price, averageRating } = req.body;
 
     const tour = await Tour.findById(tourId);
     if (!tour) {
@@ -54,7 +61,9 @@ export const updateTour = async (req, res) => {
     if (city) tour.city = city;
     if (price) tour.price = price;
     if (averageRating) tour.averageRating = averageRating;
-    if (image) tour.image = image;
+    const image = req.file ? req.file.path : null;
+    tour.image =image;
+    
 
     await tour.save();
     res.status(200).json({ message: "Tour updated successfully", tour });
