@@ -2,6 +2,7 @@ import Tour from "./tour.model.js";
 
 export const createTour = async (req, res) => {
   try {
+<<<<<<< HEAD
     const {
       title,
       description,
@@ -34,6 +35,17 @@ export const createTour = async (req, res) => {
       image,
       createdBy,
     });
+=======
+    const { title, description, location, country, city, price, averageRating,createdBy } = req.body;
+    const image = req.file ? req.file.path : null;
+    // let image;    //e njejta if else
+    // if(req.file){
+    //   image = req.file.path;
+    // }else{
+    //   image = null
+    // }
+    const tour = new Tour({ title, description, location, country, city, price, averageRating, image,createdBy });
+>>>>>>> 6fa8b2b4619084cdadc96b7435af5b5875c9b593
     await tour.save();
     res.status(201).json({ message: "Trou created", tour });
   } catch (error) {
@@ -66,8 +78,13 @@ export const getTourById = async (req, res) => {
 };
 export const updateTour = async (req, res) => {
   try {
+<<<<<<< HEAD
     const { tourId } = req.params;
     const { title, description, location, country, city, price } = req.body;
+=======
+    const tourId = req.params.id;
+    const { title, description, location, country, city, price, averageRating } = req.body;
+>>>>>>> 6fa8b2b4619084cdadc96b7435af5b5875c9b593
 
     const tour = await Tour.findById(tourId);
     if (!tour) {
@@ -81,8 +98,15 @@ export const updateTour = async (req, res) => {
     if (country) tour.country = country;
     if (city) tour.city = city;
     if (price) tour.price = price;
+<<<<<<< HEAD
     const image = req.file ? req.file.path : null;
     tour.image = image;
+=======
+    if (averageRating) tour.averageRating = averageRating;
+    const image = req.file ? req.file.path : null;
+    tour.image =image;
+    
+>>>>>>> 6fa8b2b4619084cdadc96b7435af5b5875c9b593
 
     await tour.save();
 

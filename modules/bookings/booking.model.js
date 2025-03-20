@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import mongoose from "mongoose";
+=======
+     import mongoose from "mongoose"
+>>>>>>> 6fa8b2b4619084cdadc96b7435af5b5875c9b593
 
 const bookingSchema = new mongoose.Schema(
   {
